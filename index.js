@@ -42,6 +42,24 @@ async function run() {
       res.send(result)
     })
 
+    app.patch('/users/:id', async (req, res) => {
+      const {name, university, address} = req.body
+      const {id} = req.params
+
+      const query = { uid: id }
+      const updatedDoc = {
+        $set: {
+          name,
+          university,
+          address
+        }
+      }
+
+      const result = await usersCollection.updateOne(query, updatedDoc)
+
+      res.send(result)
+    })
+
     app.get('/posts', async (req, res) => {
       const query = {}
       const posts = await postsCollection.find(query).sort({time: -1}).toArray()
